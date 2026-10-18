@@ -1,0 +1,14 @@
+.wall {
+  display: grid;
+  grid-template-columns: repeat(6, 100px);
+  gap: 20px;
+  justify-content: center;
+}
+
+.locker.free {
+  border: 2px dashed #888;
+  background: transparent;
+  color: #888;
+  display: grid;
+  place-items: center;
+}

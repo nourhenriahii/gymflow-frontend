@@ -1,0 +1,111 @@
+.locker {
+  width: 60px;
+  height: 90px;
+  margin: 40px auto;
+  cursor: pointer;
+  --a: 0deg;
+}
+
+.plan-monthly {
+  --c: #ff6f91;
+}
+.plan-quarterly {
+  --c: #36c2ce;
+}
+.plan-yearly {
+  --c: #a68bff;
+}
+
+.cube {
+  position: relative;
+  width: 60px;
+  height: 90px;
+  transform-style: preserve-3d;
+  transform: rotateX(-30deg) rotateY(-45deg);
+}
+
+.face {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 90px;
+}
+
+.inner {
+  background: #0d0a22;
+  transform: translateZ(24px);
+}
+.warning .inner {
+  background: #6b5200;
+}
+.expired .inner {
+  background: #7a1812;
+}
+
+.side {
+  background: color-mix(in srgb, var(--c) 58%, #000);
+  transform: rotateY(90deg) translateZ(30px);
+}
+
+.top {
+  top: 15px;
+  height: 60px;
+  background: color-mix(in srgb, var(--c) 72%, #fff);
+  transform: rotateX(90deg) translateZ(45px);
+}
+
+.door {
+  background: var(--c);
+  transform-origin: left center;
+  transform: translateZ(30px) rotateY(var(--a));
+  transition: transform 0.4s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 8px;
+  color: #1a1440;
+  font-family: sans-serif;
+}
+
+.locker-number {
+  font-weight: 900;
+  font-size: 16px;
+}
+.locker-days {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.led {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  width: 40px;
+  height: 6px;
+  border-radius: 3px;
+}
+.active .led {
+  background: #2fd08a;
+}
+.warning .led {
+  background: #ffd23f;
+}
+.expired .led {
+  background: #ff3b30;
+}
+
+.warning {
+  --a: -25deg;
+}
+.expired {
+  --a: -50deg;
+}
+.locker:hover {
+  --a: -70deg;
+}
+
+.locker.dim {
+  opacity: 0.25;
+}

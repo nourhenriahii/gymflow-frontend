@@ -1,0 +1,11 @@
+.sheet {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 320px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
