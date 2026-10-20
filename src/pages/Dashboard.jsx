@@ -1,73 +1,99 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getStatus } from "../utils/getStatus";
-import {
-  members as initialMembers,
-  PLANS,
-  COLS,
-  TOTAL_LOCKERS,
-} from "../data/members";
+import { membersApi } from "../utils/api";
+import { COLS, TOTAL_LOCKERS, MAX_LOCKERS } from "../config";
 import LockerWall from "../components/LockerWall";
 import MemberSheet from "../components/MemberSheet";
 import AddMemberSheet from "../components/AddMemberSheet";
 import NotificationBell from "../components/NotificationBell";
 import ChatBot from "../components/ChatBot";
 
+const TOTAL_KEY = "gymflow_total";
+
+function readTotal() {
+  try {
+    const n = Number(localStorage.getItem(TOTAL_KEY));
+    return Number.isInteger(n) && n >= COLS ? n : TOTAL_LOCKERS;
+  } catch {
+    return TOTAL_LOCKERS;
+  }
+}
+
 function Dashboard({ onLogout }) {
-  const [members, setMembers] = useState(initialMembers);
-  const [total, setTotal] = useState(TOTAL_LOCKERS);
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const [total, setTotal] = useState(readTotal);
   const [selected, setSelected] = useState(null);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
 
+  const loadMembers = useCallback(async () => {
+    setLoading(true);
+    setLoadError("");
+    try {
+      const list = await membersApi.list();
+      setMembers(list);
+      // Make sure every saved locker fits on the wall.
+      const highest = Math.max(0, ...list.map((m) => m.locker));
+      setTotal((t) => Math.max(t, Math.ceil(highest / COLS) * COLS));
+    } catch (err) {
+      setLoadError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadMembers();
+  }, [loadMembers]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(TOTAL_KEY, String(total));
+    } catch {}
+  }, [total]);
+
   const selectedMember = members.find((m) => m.locker === selected);
 
-  function updateMember(locker, changes) {
-    setMembers(
-      members.map((m) => (m.locker === locker ? { ...m, ...changes } : m)),
-    );
+  async function refresh() {
+    try {
+      setMembers(await membersApi.list());
+    } catch {}
   }
 
-  function handleRenew(locker) {
-    const member = members.find((m) => m.locker === locker);
-    const plan = PLANS[member.plan];
+  async function guarded(action) {
+    try {
+      return await action();
+    } catch (err) {
+      refresh();
+      throw err;
+    }
+  }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  const replace = (updated) =>
+    setMembers((prev) => prev.map((m) => (m.id === updated.id ? updated : m)));
 
-    const base = member.endDate > today ? member.endDate : today;
-    const newEnd = new Date(base);
-    newEnd.setDate(newEnd.getDate() + plan.days);
+  const handleRenew = (member) =>
+    guarded(async () => replace(await membersApi.renew(member.id)));
 
-    updateMember(locker, {
-      endDate: newEnd,
-      owes: member.owes + plan.price,
+  const handlePay = (member) =>
+    guarded(async () => replace(await membersApi.pay(member.id)));
+
+  const handleAdd = (locker, { name, plan }) =>
+    guarded(async () => {
+      const created = await membersApi.create({ name, locker, plan });
+      setMembers((prev) => [...prev, created]);
     });
-  }
 
-  function handlePay(locker) {
-    updateMember(locker, { owes: 0 });
-  }
+  const handleRemove = (member) =>
+    guarded(async () => {
+      await membersApi.remove(member.id);
+      setMembers((prev) => prev.filter((m) => m.id !== member.id));
+      setSelected(null);
+    });
 
-  function handleAdd(locker, { name, plan }) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const end = new Date(today);
-    end.setDate(end.getDate() + PLANS[plan].days);
-
-    const nextId = Math.max(0, ...members.map((m) => m.id)) + 1;
-
-    setMembers([
-      ...members,
-      { id: nextId, name, locker, plan, endDate: end, owes: PLANS[plan].price },
-    ]);
-  }
-
-  function handleRemove(locker) {
-    setMembers(members.filter((m) => m.locker !== locker));
-    setSelected(null);
-  }
-
+  const canGrow = total + COLS <= MAX_LOCKERS;
   const canShrink =
     total > COLS && !members.some((m) => m.locker > total - COLS);
 
@@ -126,6 +152,15 @@ function Dashboard({ onLogout }) {
         </div>
       </div>
 
+      {loadError && (
+        <div className="banner" role="alert">
+          <span>{loadError}</span>
+          <button className="chip" onClick={loadMembers}>
+            Retry
+          </button>
+        </div>
+      )}
+
       <div className="tools">
         <input
           type="search"
@@ -154,7 +189,11 @@ function Dashboard({ onLogout }) {
         >
           Expired
         </button>
-        <button className="chip" onClick={() => setTotal(total + COLS)}>
+        <button
+          className="chip"
+          disabled={!canGrow}
+          onClick={() => setTotal(total + COLS)}
+        >
           + Add a row
         </button>
         <button
@@ -167,13 +206,17 @@ function Dashboard({ onLogout }) {
       </div>
 
       <div className="stage">
-        <LockerWall
-          members={members}
-          total={total}
-          query={query}
-          filter={filter}
-          onSelect={setSelected}
-        />
+        {loading ? (
+          <p className="status-line">Loading members…</p>
+        ) : loadError ? null : (
+          <LockerWall
+            members={members}
+            total={total}
+            query={query}
+            filter={filter}
+            onSelect={setSelected}
+          />
+        )}
       </div>
 
       {selectedMember && (
@@ -181,9 +224,9 @@ function Dashboard({ onLogout }) {
           key={selectedMember.id}
           member={selectedMember}
           onClose={() => setSelected(null)}
-          onRenew={() => handleRenew(selectedMember.locker)}
-          onPay={() => handlePay(selectedMember.locker)}
-          onRemove={() => handleRemove(selectedMember.locker)}
+          onRenew={() => handleRenew(selectedMember)}
+          onPay={() => handlePay(selectedMember)}
+          onRemove={() => handleRemove(selectedMember)}
         />
       )}
 
@@ -200,17 +243,17 @@ function Dashboard({ onLogout }) {
 
       <footer className="footer">
         <span>
-          Designed &amp; built by <strong>YOUR NAME</strong>
+          Designed &amp; built by <strong>Nourhen Riahi</strong>
         </span>
         <a
-          href="https://github.com/YOUR-GITHUB"
+          href="https://github.com/nourhenriahii"
           target="_blank"
           rel="noreferrer"
         >
           GitHub
         </a>
         <a
-          href="https://www.linkedin.com/in/YOUR-LINKEDIN"
+          href="https://www.linkedin.com/in/nourhen-riahi"
           target="_blank"
           rel="noreferrer"
         >

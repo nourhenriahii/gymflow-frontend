@@ -1,16 +1,78 @@
-# React + Vite
+# GymFlow Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A React dashboard for managing gym members, memberships, payments and lockers. Every member gets a locker on an interactive 3D wall: doors swing open as memberships run out.
 
-Currently, two official plugins are available:
+> Backend repository: **[gymflow-backend](https://github.com/YOUR-GITHUB/gymflow-backend)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![Dashboard](docs/dashboard.png)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Interactive 3D locker wall (drag to rotate, zoom, reset view)
+- Locker status at a glance: active, ending within 7 days, expired
+- Add members, renew plans (monthly / quarterly / yearly) and record payments
+- Alerts bell for memberships that are ending or expired
+- Search by name or locker number, and filter by status
+- Built-in assistant: "Who expired?", "Who is ending soon?", "Who owes money?"
+- Sign up with email verification (6-digit code) and secure login
+- Each account has its own private gym data
+- Responsive layout
 
-## Expanding the Oxlint configuration
+## Screenshots
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+| Login | Create account |
+| --- | --- |
+| ![Login](docs/login.png) | ![Register](docs/register.png) |
+
+| Member details | Assistant |
+| --- | --- |
+| ![Member sheet](docs/member.png) | ![Assistant](docs/assistant.png) |
+
+## Tech stack
+
+- React 19 and Vite
+- React Router
+- Plain CSS (3D transforms, glassmorphism)
+
+## Getting started
+
+You need Node.js 18+ and the [backend](https://github.com/YOUR-GITHUB/gymflow-backend) running on port 4000.
+
+```bash
+git clone https://github.com/YOUR-GITHUB/gymflow-frontend.git
+cd gymflow-frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173.
+
+In development, Vite forwards every `/api` request to `http://localhost:4000` (see `vite.config.js`), so no extra configuration is needed.
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview the production build |
+
+## Project structure
+
+```
+src/
+  components/   LockerWall, Locker, MemberSheet, AddMemberSheet,
+                NotificationBell, ChatBot, ProtectedRoute
+  pages/        Login, Register, Verify, Dashboard
+  utils/        api, auth, getStatus, botAnswer, useEscape
+  config.js     Wall size and plan display values
+```
+
+## Notes
+
+- Plan names and prices in `src/config.js` are for display only. The server is the source of truth for prices and dates.
+- `MAX_LOCKERS` in `src/config.js` must match `MAX_LOCKERS` in the backend `.env`.
+
+## Author
+
+**YOUR NAME**: [GitHub](https://github.com/YOUR-GITHUB) · [LinkedIn](https://www.linkedin.com/in/YOUR-LINKEDIN)

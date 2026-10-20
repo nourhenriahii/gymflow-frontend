@@ -74,3 +74,13 @@
   color: #ff8a80;
   margin-top: 12px;
 }
+.login-card .link-btn {
+  width: auto;
+  margin-top: 14px;
+  padding: 0;
+  background: none;
+  color: #f3efff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: underline;
+}

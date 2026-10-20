@@ -1,20 +1,38 @@
 import { useState } from "react";
-import { PLANS } from "../data/members";
+import { PLANS } from "../config";
+import useEscape from "../utils/useEscape";
 import "./MemberSheet.css";
 
 function AddMemberSheet({ locker, onAdd, onClose }) {
   const [name, setName] = useState("");
   const [plan, setPlan] = useState("monthly");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  useEscape(onClose);
+
+  async function handleSubmit(e) {
     e.preventDefault();
     if (name.trim() === "") return;
-    onAdd({ name: name.trim(), plan });
+
+    setBusy(true);
+    setError("");
+    try {
+      await onAdd({ name: name.trim(), plan });
+    } catch (err) {
+      setError(err.message);
+      setBusy(false);
+    }
   }
 
   return (
-    <aside className="sheet">
-      <button type="button" className="sheet-close" onClick={onClose}>
+    <aside className="sheet" role="dialog" aria-label={`Locker ${locker}`}>
+      <button
+        type="button"
+        className="sheet-close"
+        onClick={onClose}
+        aria-label="Close"
+      >
         ×
       </button>
       <h2>Locker {locker}</h2>
@@ -42,7 +60,15 @@ function AddMemberSheet({ locker, onAdd, onClose }) {
           </select>
         </label>
 
-        <button type="submit">Add member</button>
+        {error && (
+          <p className="sheet-error" role="alert">
+            {error}
+          </p>
+        )}
+
+        <button type="submit" disabled={busy}>
+          {busy ? "Adding..." : "Add member"}
+        </button>
       </form>
     </aside>
   );

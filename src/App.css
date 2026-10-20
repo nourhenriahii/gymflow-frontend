@@ -148,3 +148,30 @@
 .footer a {
   color: #f3efff;
 }
+
+.boot {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: #b3aae0;
+}
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255, 59, 48, 0.18);
+  border: 1px solid rgba(255, 59, 48, 0.5);
+}
+.status-line {
+  padding: 40px 0;
+  text-align: center;
+  color: #b3aae0;
+}
+.chip:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

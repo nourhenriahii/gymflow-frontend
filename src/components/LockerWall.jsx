@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Locker from "./Locker";
-import { COLS } from "../data/members";
+import { COLS } from "../config";
 import { getStatus } from "../utils/getStatus";
 import "./LockerWall.css";
 
@@ -20,7 +20,7 @@ function LockerWall({ members, total, query, filter, onSelect }) {
   const rows = Math.ceil(total / COLS);
   const w = COLS * PITCH_X - 10;
   const h = rows * PITCH_Y - 54;
-  const reach = (w + h) * 0.707; // العرض التقريبي بعد تدوير الأرضية 45 درجة
+  const reach = (w + h) * 0.707;
   const scale = fit * zoom;
   const height = (reach * 0.9 + 120) * scale;
 
@@ -35,6 +35,7 @@ function LockerWall({ members, total, query, filter, onSelect }) {
 
   const numbers = Array.from({ length: total }, (_, i) => i + 1);
   const q = query.trim().toLowerCase();
+  const byLocker = new Map(members.map((m) => [m.locker, m]));
 
   function handlePointerDown(e) {
     drag.current = { x: e.clientX, y: e.clientY, rx: view.x, rz: view.z };
@@ -120,7 +121,7 @@ function LockerWall({ members, total, query, filter, onSelect }) {
             left: (i % COLS) * PITCH_X,
             top: Math.floor(i / COLS) * PITCH_Y,
           };
-          const member = members.find((m) => m.locker === n);
+          const member = byLocker.get(n);
 
           if (!member) {
             const freeDim = (q !== "" && String(n) !== q) || filter !== "all";

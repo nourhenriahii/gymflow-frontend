@@ -76,3 +76,7 @@
 .sheet option {
   color: #1a1440;
 }
+.sheet .sheet-error {
+  color: #ff8a80;
+  border-bottom: 0;
+}

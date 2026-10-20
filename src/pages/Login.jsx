@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { login } from "../utils/auth";
 import "./Login.css";
 
@@ -66,8 +66,9 @@ function Login({ onLogin }) {
         <button type="submit" disabled={loading}>
           {loading ? "Signing in..." : "Sign in"}
         </button>
-
-        <small>Demo: demo@gymflow.com / demo1234</small>
+        <small>
+          No account? <Link to="/register">Create one</Link>
+        </small>
       </form>
     </main>
   );
