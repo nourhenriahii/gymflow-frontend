@@ -2,7 +2,7 @@
 
 A React dashboard for managing gym members, memberships, payments and lockers. Every member gets a locker on an interactive 3D wall: doors swing open as memberships run out.
 
-> Backend repository: **[gymflow-backend](https://github.com/YOUR-GITHUB/gymflow-backend)**
+> Backend repository: **[gymflow-backend](https://github.com/nourhenriahii/gymflow-backend)**
 
 ![Dashboard](docs/dashboard.png)
 
