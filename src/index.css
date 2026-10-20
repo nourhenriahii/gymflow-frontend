@@ -1,0 +1,39 @@
+:root {
+  color-scheme: dark;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #120e2a;
+  color: #f3efff;
+  font-family: Figtree, system-ui, sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      40% 35% at 12% 8%,
+      rgba(255, 111, 145, 0.38),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 40% at 92% 28%,
+      rgba(54, 194, 206, 0.3),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 45% at 40% 105%,
+      rgba(166, 139, 255, 0.4),
+      transparent 70%
+    );
+}

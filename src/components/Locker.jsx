@@ -13,6 +13,8 @@ function Locker({ number, name, endDate, plan, dimmed, onClick }) {
       <div className="cube">
         <div className="face inner" />
         <div className="face side" />
+        <div className="face side2" />
+        <div className="face back" />
         <div className="face top" />
         <div className="face door">
           <span className="locker-number">{number}</span>

@@ -1,8 +1,9 @@
 .locker {
+  position: relative;
   width: 60px;
-  height: 90px;
-  margin: 40px auto;
+  height: 60px;
   cursor: pointer;
+  transform-style: preserve-3d;
   --a: 0deg;
 }
 
@@ -17,24 +18,40 @@
 }
 
 .cube {
-  position: relative;
-  width: 60px;
-  height: 90px;
+  position: absolute;
+  inset: 0;
   transform-style: preserve-3d;
-  transform: rotateX(-30deg) rotateY(-45deg);
 }
 
 .face {
   position: absolute;
+  display: block;
+}
+
+.top {
+  inset: 0;
+  background: color-mix(in srgb, var(--c) 72%, #fff);
+  transform: translateZ(90px);
+}
+
+.side {
   left: 0;
   top: 0;
   width: 60px;
   height: 90px;
+  transform-origin: 0 0;
+  background: color-mix(in srgb, var(--c) 58%, #000);
+  transform: translateZ(90px) rotateZ(90deg) rotateX(-90deg);
 }
 
 .inner {
+  left: 0;
+  top: 57px;
+  width: 60px;
+  height: 90px;
+  transform-origin: 0 0;
   background: #0d0a22;
-  transform: translateZ(24px);
+  transform: translateZ(90px) rotateX(-90deg);
 }
 .warning .inner {
   background: #6b5200;
@@ -43,23 +60,15 @@
   background: #7a1812;
 }
 
-.side {
-  background: color-mix(in srgb, var(--c) 58%, #000);
-  transform: rotateY(90deg) translateZ(30px);
-}
-
-.top {
-  top: 15px;
-  height: 60px;
-  background: color-mix(in srgb, var(--c) 72%, #fff);
-  transform: rotateX(90deg) translateZ(45px);
-}
-
 .door {
-  background: var(--c);
-  transform-origin: left center;
-  transform: translateZ(30px) rotateY(var(--a));
+  left: 0;
+  top: 60px;
+  width: 60px;
+  height: 90px;
+  transform-origin: 0 0;
+  transform: translate3d(0, 1px, 90px) rotateZ(var(--a)) rotateX(-90deg);
   transition: transform 0.4s;
+  background: var(--c);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,10 +80,10 @@
 
 .locker-number {
   font-weight: 900;
-  font-size: 16px;
+  font-size: 15px;
 }
 .locker-days {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
 }
 
@@ -97,15 +106,34 @@
 }
 
 .warning {
-  --a: -25deg;
+  --a: 24deg;
 }
 .expired {
-  --a: -50deg;
+  --a: 52deg;
 }
 .locker:hover {
-  --a: -70deg;
+  --a: 70deg;
 }
 
 .locker.dim {
-  opacity: 0.25;
+  --c: #3a3566;
+}
+.side2 {
+  left: 60px;
+  top: 0;
+  width: 60px;
+  height: 90px;
+  transform-origin: 0 0;
+  background: color-mix(in srgb, var(--c) 64%, #000);
+  transform: translateZ(90px) rotateZ(90deg) rotateX(-90deg);
+}
+
+.back {
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 90px;
+  transform-origin: 0 0;
+  background: color-mix(in srgb, var(--c) 50%, #000);
+  transform: translateZ(90px) rotateX(-90deg);
 }

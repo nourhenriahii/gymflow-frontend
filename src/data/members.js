@@ -4,6 +4,7 @@ const daysFromToday = (n) => {
   d.setDate(d.getDate() + n);
   return d;
 };
+export const COLS = 6;
 export const TOTAL_LOCKERS = 30;
 export const members = [
   {

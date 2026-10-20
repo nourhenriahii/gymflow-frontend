@@ -2,10 +2,77 @@
   position: fixed;
   right: 16px;
   bottom: 16px;
-  width: 320px;
-  padding: 20px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  width: min(380px, calc(100% - 32px));
+  padding: 22px;
+  border-radius: 20px;
+  z-index: 5;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.22),
+    rgba(255, 255, 255, 0.07)
+  );
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+
+.sheet h2 {
+  font:
+    900 1.5rem Unbounded,
+    sans-serif;
+  margin: 0 30px 10px 0;
+}
+.sheet p {
+  margin: 0;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sheet button {
+  margin: 14px 8px 0 0;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 999px;
+  font:
+    600 0.95rem Figtree,
+    sans-serif;
+  background: #fff;
+  color: #1a1440;
+  cursor: pointer;
+}
+.sheet button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.sheet .sheet-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  margin: 0;
+  padding: 0 8px;
+  background: none;
+  color: #fff;
+  font-size: 1.6rem;
+}
+.sheet label {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.sheet input,
+.sheet select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 12px;
+  font: inherit;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+}
+.sheet option {
+  color: #1a1440;
 }

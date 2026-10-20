@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { getStatus, getDaysLeft } from "../utils/getStatus";
 import "./MemberSheet.css";
 
-function MemberSheet({ member, onClose, onRenew, onPay }) {
+function MemberSheet({ member, onClose, onRenew, onPay, onRemove }) {
+  const [confirming, setConfirming] = useState(false);
   const status = getStatus(member.endDate);
   const days = getDaysLeft(member.endDate);
 
@@ -23,6 +25,19 @@ function MemberSheet({ member, onClose, onRenew, onPay }) {
       <button onClick={onPay} disabled={member.owes === 0}>
         {member.owes === 0 ? "Paid in full" : "Record payment"}
       </button>
+
+      {confirming ? (
+        <div className="confirm">
+          <p>
+            Remove {member.name} and free locker {member.locker}?
+            {member.owes > 0 && ` They still owe €${member.owes}.`}
+          </p>
+          <button onClick={onRemove}>Yes, remove</button>
+          <button onClick={() => setConfirming(false)}>Cancel</button>
+        </div>
+      ) : (
+        <button onClick={() => setConfirming(true)}>Remove member</button>
+      )}
     </aside>
   );
 }

@@ -1,0 +1,82 @@
+.bell-wrap {
+  position: relative;
+}
+
+.bell {
+  padding: 9px 16px;
+  font:
+    500 0.9rem Figtree,
+    sans-serif;
+  color: inherit;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.badge {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #ff3b30;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.alerts {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 6;
+  width: min(340px, 86vw);
+  max-height: 60vh;
+  overflow: auto;
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(30, 24, 70, 0.85);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.alert {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.alert:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.alert small {
+  display: block;
+  margin-left: 16px;
+  color: #b3aae0;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+}
+.dot.warning {
+  background: #ffd23f;
+}
+.dot.expired {
+  background: #ff3b30;
+}
+
+.alerts-empty {
+  margin: 8px;
+  color: #b3aae0;
+}

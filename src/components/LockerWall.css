@@ -1,14 +1,80 @@
-.wall {
-  display: grid;
-  grid-template-columns: repeat(6, 100px);
-  gap: 20px;
-  justify-content: center;
+.viewport {
+  position: relative;
+  width: 100%;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  overflow: hidden;
+}
+.viewport:active {
+  cursor: grabbing;
+}
+
+.view-tools {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #b3aae0;
+}
+
+.reset {
+  padding: 6px 12px;
+  font:
+    500 0.85rem Figtree,
+    sans-serif;
+  color: inherit;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.scene {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 410px;
+  height: 516px;
+  margin: -250px 0 0 -205px;
+  transform-style: preserve-3d;
+}
+
+.floor {
+  position: absolute;
+  inset: -46px;
+  transform: translateZ(-1px);
+  border-radius: 10px;
+  background: conic-gradient(
+      #2c2560 25%,
+      #241e52 0 50%,
+      #2c2560 0 75%,
+      #241e52 0
+    )
+    0 0 / 70px 70px;
+}
+
+.slot {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  transform-style: preserve-3d;
 }
 
 .locker.free {
-  border: 2px dashed #888;
-  background: transparent;
-  color: #888;
+  width: 60px;
+  height: 60px;
+  border: 2px dashed rgba(255, 255, 255, 0.5);
   display: grid;
   place-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.locker.free.dim {
+  opacity: 0.25;
 }
