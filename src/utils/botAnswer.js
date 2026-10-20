@@ -1,9 +1,8 @@
 import { getStatus, getDaysLeft } from "./getStatus";
-import { TOTAL_LOCKERS } from "../data/members";
 
 const names = (list) => list.map((m) => m.name).join(", ");
 
-export function botAnswer(text, members) {
+export function botAnswer(text, members, total) {
   const t = text.toLowerCase();
 
   if (t.includes("expired")) {
@@ -22,22 +21,22 @@ export function botAnswer(text, members) {
 
   if (t.includes("owe") || t.includes("due") || t.includes("unpaid")) {
     const list = members.filter((m) => m.owes > 0);
-    const total = list.reduce((sum, m) => sum + m.owes, 0);
+    const sum = list.reduce((s, m) => s + m.owes, 0);
     return list.length
-      ? `${list.length} members owe €${total}: ${names(list)}.`
+      ? `${list.length} members owe €${sum}: ${names(list)}.`
       : "Everyone has paid.";
   }
 
   if (t.includes("free")) {
-    return `${TOTAL_LOCKERS - members.length} lockers are free.`;
+    return `${total - members.length} lockers are free.`;
   }
 
   const num = t.match(/\d+/);
   if (num) {
     const n = Number(num[0]);
 
-    if (n < 1 || n > TOTAL_LOCKERS) {
-      return `Locker ${n} does not exist. Lockers go from 1 to ${TOTAL_LOCKERS}.`;
+    if (n < 1 || n > total) {
+      return `Locker ${n} does not exist. Lockers go from 1 to ${total}.`;
     }
 
     const m = members.find((x) => x.locker === n);

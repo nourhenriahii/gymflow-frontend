@@ -4,7 +4,7 @@ import "./ChatBot.css";
 
 const SUGGESTIONS = ["Who expired?", "Who is ending soon?", "Who owes money?"];
 
-function ChatBot({ members }) {
+function ChatBot({ members, total }) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([
@@ -22,7 +22,7 @@ function ChatBot({ members }) {
     setMessages((prev) => [
       ...prev,
       { from: "me", text: q },
-      { from: "bot", text: botAnswer(q, members) },
+      { from: "bot", text: botAnswer(q, members, total) },
     ]);
     setText("");
   }
